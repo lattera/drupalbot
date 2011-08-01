@@ -1,0 +1,16 @@
+if (preg_match("/^\.futurama$/i", trim($data->message))) {                               
+        // Curl Stuff
+        $ch = curl_init(); 
+        curl_setopt($ch, CURLOPT_URL, "http://slashdot.org");                                   
+        curl_setopt($ch, CURLOPT_HEADER, true);                                                
+        curl_setopt($ch, CURLOPT_FILETIME, true);
+        curl_setopt($ch, CURLOPT_NOBODY, true); 
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+        $futurama_quote = curl_exec($ch);                                                       
+        curl_close($ch);                                                                 
+        // Parsing
+        preg_match('/^X-(B|F|L).*$/m', $futurama_quote, $bender);                           
+        $futurama_quote = preg_replace("/^X-/", "", $bender[0]);                                
+        // Sending
+        bot_message($data->channel, $futurama_quote);                                         
+} 
